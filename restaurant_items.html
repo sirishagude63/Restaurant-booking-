@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Restaurant Menu & Table Booking</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body {
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #faf9f6;
+      color: #222;
+      line-height: 1.4;
+    }
+    .container {
+      max-width: 980px;
+      margin: auto;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      padding: 25px 10px;
+      background: #444;
+      color: white;
+      border-radius: 8px;
+    }
+    h1 { margin: 0; font-size: 2rem; }
+    .flex {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .menu, .booking {
+      flex: 1 1 300px;
+      background: white;
+      border-radius: 10px;
+      padding: 18px 20px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    }
+    .menu-item {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 8px;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .menu-item:last-child { border-bottom: none; }
+    .menu-item-name {
+      font-weight: 600;
+    }
+    .price {
+      white-space: nowrap;
+    }
+    .qty {
+      width: 60px;
+    }
+    .order-summary {
+      margin-top: 16px;
+    }
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      font-size: 0.95rem;
+    }
+    .total {
+      font-weight: 700;
+      border-top: 1px solid #ccc;
+      padding-top: 10px;
+      margin-top: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .booking form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    input, select, button, textarea {
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    button {
+      cursor: pointer;
+      background: #0071e3;
+      color: white;
+      border: none;
+      font-weight: 600;
+      transition: filter .2s;
+    }
+    button:hover { filter: brightness(1.05); }
+    .small {
+      font-size: 0.75rem;
+      color: #666;
+    }
+    .inline {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      background: #f2f2f2;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      margin-left: 4px;
+    }
+    .success {
+      background: #e6ffed;
+      border: 1px solid #4caf50;
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 12px;
+      color: #2d6a3f;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Harbor Kitchen</h1>
+      <p>Reserve a table & pre-select your dishes</p>
+    </header>
+
+    <div class="flex" style="margin-top: 24px;">
+      <!-- Menu -->
+      <div class="menu">
+        <h2>Menu</h2>
+        <p class="small">Select quantities to add to your booking.</p>
+
+        <div id="menu-list">
+          <!-- JS will inject items here -->
+        </div>
+
+        <div class="order-summary">
+          <h3>Order Summary</h3>
+          <div id="summary-items">
+            <p class="small">No items selected.</p>
+          </div>
+          <div class="total">
+            <span>Total:</span>
+            <span id="total-price">$0.00</span>
+          </div>
+          <div style="margin-top:10px;">
+            <button type="button" id="clear-order">Clear Order</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Booking -->
+      <div class="booking">
+        <h2>Book a Table</h2>
+        <form id="booking-form">
+          <div class="inline">
+            <div style="flex:1;">
+              <label for="fullName">Full Name</label>
+              <input type="text" id="fullName" name="fullName" required placeholder="John Doe">
+            </div>
+            <div style="flex:1;">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" required placeholder="you@example.com">
+            </div>
+          </div>
+
+          <div class="inline">
+            <div style="flex:1;">
+              <label for="date">Date</label>
+              <input type="date" id="date" name="date" required>
+            </div>
+            <div style="flex:1;">
+              <label for="time">Time</label>
+              <input type="time" id="time" name="time" required>
+            </div>
+          </div>
+
+          <div class="inline">
+            <div style="flex:1;">
+              <label for="guests">Guests</label>
+              <select id="guests" name="guests" required>
+                <option value="">Select</option>
+                <option value="1">1 person</option>
+                <option value="2">2 people</option>
+                <option value="3">3 people</option>
+                <option value="4">4 people</option>
+                <option value="5">5 or more</option>
+              </select>
+            </div>
+            <div style="flex:1;">
+              <label for="notes">Special Requests</label>
+              <textarea id="notes" name="notes" rows="2" placeholder="Allergies, celebration, etc."></textarea>
+            </div>
+          </div>
+
+          <div>
+            <button type="submit">Confirm Booking & Order</button>
+          </div>
+        </form>
+
+        <div id="result" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sample menu data
+    const menuData = [
+      { id: 1, name: "Grilled Salmon", desc: "Served with lemon butter sauce", price: 18.99 },
+      { id: 2, name: "Truffle Mushroom Pasta", desc: "Creamy fettuccine with wild mushrooms", price: 15.50 },
+      { id: 3, name: "Caesar Salad", desc: "Romaine, parmesan, croutons", price: 9.25 },
+      { id: 4, name: "Beef Slider Trio", desc: "Mini burgers with house sauce", price: 12.00 },
+      { id: 5, name: "Chocolate Mousse", desc: "Rich dark chocolate with berry compote", price: 7.00 }
+    ];
+
+    const order = {}; // { menuId: quantity }
+
+    function formatPrice(p) {
+      return "$" + p.toFixed(2);
+    }
+
+    function renderMenu() {
+      const container = document.getElementById("menu-list");
+      container.innerHTML = "";
+      menuData.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "menu-item";
+        div.innerHTML = `
+          <div>
+            <div class="menu-item-name">${item.name}</div>
+            <div class="small">${item.desc}</div>
+          </div>
+          <div class="price">${formatPrice(item.price)}</div>
+          <div>
+            <input type="number" min="0" value="${order[item.id]||0}" class="qty" aria-label="Quantity for ${item.name}" data-id="${item.id}">
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      // attach listeners
+      document.querySelectorAll(".qty").forEach(inp => {
+        inp.addEventListener("input", e => {
+          const id = parseInt(e.target.dataset.id);
+          let qty = parseInt(e.target.value);
+          if (isNaN(qty) || qty < 0) qty = 0;
+          if (qty === 0) delete order[id];
+          else order[id] = qty;
+          updateSummary();
+        });
+      });
+    }
+
+    function updateSummary() {
+      const summary = document.getElementById("summary-items");
+      summary.innerHTML = "";
+      let total = 0;
+      const entries = Object.entries(order); // [ [id, qty], ... ]
+      if (entries.length === 0) {
+        summary.innerHTML = "<p class='small'>No items selected.</p>";
+      } else {
+        entries.forEach(([idStr, qty]) => {
+          const id = parseInt(idStr);
+          const item = menuData.find(m => m.id === id);
+          if (!item) return;
+          const line = document.createElement("div");
+          line.className = "summary-line";
+          const subtotal = item.price * qty;
+          total += subtotal;
+          line.innerHTML = `
+            <div>${qty} × ${item.name}</div>
+            <div>${formatPrice(subtotal)}</div>
+          `;
+          summary.appendChild(line);
+        });
+      }
+      document.getElementById("total-price").textContent = formatPrice(total);
+      // reflect quantities in inputs (in case of programmatic change)
+      document.querySelectorAll(".qty").forEach(inp => {
+        const id = parseInt(inp.dataset.id);
+        inp.value = order[id] || 0;
+      });
+    }
+
+    document.getElementById("clear-order").addEventListener("click", () => {
+      for (const k in order) delete order[k];
+      renderMenu();
+      updateSummary();
+    });
+
+    // Initial render
+    renderMenu();
+    updateSummary();
+
+    // Booking form submission handler
+    document.getElementById("booking-form").addEventListener("submit", e => {
+      e.preventDefault();
+      const name = document.getElementById("fullName").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const date = document.getElementById("date").value;
+      const time = document.getElementById("time").value;
+      const guests = document.getElementById("guests").value;
+      const notes = document.getElementById("notes").value.trim();
+
+      if (!name || !email || !date || !time || !guests) {
+        alert("Please complete required booking fields.");
+        return;
+      }
+
+      // Build a summary
+      let orderSummary = "";
+      if (Object.keys(order).length === 0) {
+        orderSummary = "<p><em>No menu items selected.</em></p>";
+      } else {
+        orderSummary = "<ul>";
+        Object.entries(order).forEach(([idStr, qty]) => {
+          const id = parseInt(idStr);
+          const item = menuData.find(m => m.id === id);
+          if (!item) return;
+          orderSummary += `<li>${qty} × ${item.name} (${formatPrice(item.price * qty)})</li>`;
+        });
+        orderSummary += "</ul>";
+      }
+
+      // Compute total again
+      let total = 0;
+      Object.entries(order).forEach(([idStr, qty]) => {
+        const item = menuData.find(m => m.id === parseInt(idStr));
+        if (item) total += item.price * qty;
+      });
+
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = `
+        <div class="success">
+          <h3>Booking Confirmed (Client-side Preview)</h3>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Date & Time:</strong> ${date} at ${time}</p>
+          <p><strong>Guests:</strong> ${guests}</p>
+          ${notes ? `<p><strong>Notes:</strong> ${notes}</p>` : ""}
+          <hr />
+          <p><strong>Order:</strong></p>
+          ${orderSummary}
+          <p class="total" style="border:none; padding:0;">
+            <span><strong>Order Total:</strong></span>
+            <span>${formatPrice(total)}</span>
+          </p>
+          <p class="small">This is a preview. To persist, wire the form to a server endpoint and store the order/booking.</p>
+        </div>
+      `;
+
+      // Here you could send `order` + booking data to backend via fetch/AJAX.
+      console.log("Booking payload:", {
+        name, email, date, time, guests, notes,
+        order: JSON.parse(JSON.stringify(order)),
+        total: total
+      });
+    });
+  </script>
+</body>
+</html>
