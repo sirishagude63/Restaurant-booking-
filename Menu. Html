@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurant Menu & Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff8f0;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #f08080;
+            color: white;
+        }
+        h2 {
+            border-bottom: 2px solid #f08080;
+            padding-bottom: 5px;
+        }
+        .menu-section {
+            margin: 20px 0;
+        }
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px dashed #ccc;
+        }
+        .booking-form {
+            background-color: #ffe4e1;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .booking-form input, .booking-form select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+        .booking-form button {
+            background-color: #f08080;
+            color: white;
+            padding: 10px;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .booking-form button:hover {
+            background-color: #d46a6a;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Sunset Bistro</h1>
+    <p>Delicious Food & Cozy Atmosphere</p>
+</header>
+
+<section class="menu-section">
+    <h2>Menu</h2>
+    <div class="menu-item">
+        <span>Grilled Chicken</span>
+        <span>$12.99</span>
+    </div>
+    <div class="menu-item">
+        <span>Margherita Pizza</span>
+        <span>$10.50</span>
+    </div>
+    <div class="menu-item">
+        <span>Caesar Salad</span>
+        <span>$8.75</span>
+    </div>
+    <div class="menu-item">
+        <span>Spaghetti Carbonara</span>
+        <span>$13.25</span>
+    </div>
+    <div class="menu-item">
+        <span>Chocolate Lava Cake</span>
+        <span>$6.50</span>
+    </div>
+</section>
+
+<section class="booking-form">
+    <h2>Book a Table</h2>
+    <form action="#" method="post">
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email Address:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required>
+
+        <label for="time">Time:</label>
+        <input type="time" id="time" name="time" required>
+
+        <label for="guests">Number of Guests:</label>
+        <select id="guests" name="guests" required>
+            <option value="">Select</option>
+            <option value="1">1 person</option>
+            <option value="2">2 people</option>
+            <option value="3">3 people</option>
+            <option value="4">4 people</option>
+            <option value="5+">5 or more</option>
+        </select>
+
+        <button type="submit">Book Now</button>
+    </form>
+</section>
+
+</body>
+</html>
